@@ -4,7 +4,7 @@ fromversion: 5.0.0
 name: NetSec - Palo Alto Networks DUG - Tag User
 description: 'Block a user by tagging it  in the Palo Alto Networks NGFW. This requires
   PAN-OS 9.1+. If the user is in the Demisto List with the name stated in playbook
-  inputs, the user will not be auto blocked but will first  require manager approval.
+  inputs, the user will not be auto blocked bu t will first  require manager approval.
   The list contents should be comma-separated (example contents: "user1,nam\jsmith")'
 starttaskid: "0"
 tasks:
