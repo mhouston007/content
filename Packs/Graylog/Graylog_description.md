@@ -1,0 +1,1 @@
+Open source SIEM for log aggrigation and searching
