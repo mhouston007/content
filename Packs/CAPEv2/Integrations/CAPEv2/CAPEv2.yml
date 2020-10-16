@@ -1,0 +1,388 @@
+category: Forensics & Malware Analysis
+commonfields:
+  id: CAPEv2_Matt
+  version: -1
+configuration:
+- defaultvalue: https://capesandbox.com/
+  display: Server URL (e.g. default is public instance https://capesandbox.com/)
+  name: base_url
+  required: true
+  type: 0
+- display: Fetch incidents
+  name: isFetch
+  required: false
+  type: 8
+- display: Incident type
+  name: incidentType
+  required: false
+  type: 13
+- display: Trust any certificate (not secure)
+  name: insecure
+  required: false
+  type: 8
+- display: Use system proxy settings
+  name: proxy
+  required: false
+  type: 8
+description: This is an integration with CAPEv2 an open source malware sandbox, based on the Cuckoo project.
+display: CAPEv2_Matt
+name: CAPEv2_Matt
+script:
+  commands:
+  - arguments:
+    - default: false
+      description: File entry-id
+      isArray: false
+      name: entry-id
+      required: true
+      secret: false
+    - default: false
+      description: VM to use for the sample analysis
+      isArray: false
+      name: vm-name
+      required: true
+      secret: false
+    deprecated: false
+    description: Submit a file for analysis
+    execution: false
+    name: cape-submit-file
+    outputs:
+    - contextPath: hello
+      description: Should be Hello **something** here
+      type: String
+#  - arguments:
+#      - default: false
+#        description: VirusTotal API Key, can be public or private key
+#        isArray: false
+#        name: VT_API_Key
+#        required: true
+#        secret: true
+#      - default: false
+#        description: Sample hash to analyze
+#        isArray: false
+#        name: hash
+#        required: true
+#        secret: false
+#      - default: false
+#        description: Name of the VM to use for analysis
+#        isArray: false
+#        name: vm_name
+#        required: false
+#        secret: false
+#    deprecated: false
+#    description: Downloads the given hash from VirusTotal and analyzes it in CAPEv2
+#    execution: false
+#    name: cape-vt-download-analyze
+#    outputs:
+#      - contextPath: hello
+#        description: Should be Hello **something** here
+#        type: String
+  - arguments:
+    - default: false
+      description: URL to analyze
+      isArray: false
+      name: url
+      required: true
+      secret: false
+    deprecated: false
+    description: Submit a URL for analysis
+    execution: false
+    name: cape-submit-url
+    outputs:
+    - contextPath: hello
+      description: Should be Hello **something** here
+      type: String
+  - arguments:
+      - default: false
+        description: Type of ID to use (MD5, SHA1, SHA256, or id)
+        isArray: false
+        name: id_type
+        required: true
+        secret: false
+      - default: false
+        description: Sample ID to view
+        isArray: false
+        name: id
+        required: true
+        secret: false
+    deprecated: false
+    description: View the results of an analyzed sample
+    execution: false
+    name: cape-view-sample
+    outputs:
+      - contextPath: hello
+        description: Should be Hello **something** here
+        type: String
+  - arguments:
+    - default: false
+      description: The type of ID to use (MD5, SHA1, SHA256)
+      isArray: false
+      name: id_type
+      required: true
+      secret: false
+    - default: false
+      description: Task ID to search by
+      isArray: false
+      name: id
+      required: true
+      secret: false
+    deprecated: false
+    description: Search for samples by task ID
+    execution: false
+    name: cape-basic-task-search
+    outputs:
+    - contextPath: hello
+      description: Should be Hello **something** here
+      type: String
+  - arguments:
+      - default: false
+        description: Placeholder
+        isArray: false
+        name: name
+        required: false
+        secret: false
+    deprecated: false
+    description: Search for samples with additional filters
+    execution: false
+    name: cape-ext-task-search
+    outputs:
+      - contextPath: hello
+        description: Should be Hello **something** here
+        type: String
+  - arguments:
+    - default: false
+      description: The maximum number of tasks to return
+      isArray: false
+      name: limit
+      required: false
+      secret: false
+    - default: false
+      description: Number of tasks to offset the start of the results from
+      isArray: false
+      name: offset
+      required: false
+      secret: false
+    deprecated: false
+    description: List tasks
+    execution: false
+    name: cape-task-lists
+    outputs:
+    - contextPath: hello
+      description: Should be Hello **something** here
+      type: String
+  - arguments:
+      - default: false
+        description: Task ID to view
+        isArray: false
+        name: task_id
+        required: true
+        secret: false
+    deprecated: false
+    description: View a the results of a given task ID
+    execution: false
+    name: cape-task-view
+    outputs:
+      - contextPath: hello
+        description: Should be Hello **something** here
+        type: String
+  - arguments:
+      - default: false
+        description: ID of sample, can be task, md5, sha1, or sha256
+        isArray: false
+        name: id
+        required: true
+        secret: false
+      - default: false
+        description: Type of ID - task, md5, sha1, or sha256
+        isArray: false
+        name: id_type
+        required: true
+        secret: false
+    deprecated: false
+    description: Retrieves the sample configuration if available
+    execution: false
+    name: cape-download-sample
+    outputs:
+      - contextPath: hello
+        description: Should be Hello **something** here
+        type: String
+  - arguments:
+    - default: false
+      description: Task ID to check for a sample config
+      isArray: false
+      name: task_id
+      required: true
+      secret: false
+    deprecated: false
+    description: Retrieves the sample configuration if available
+    execution: false
+    name: cape-get-sample-config
+    outputs:
+    - contextPath: hello
+      description: Should be Hello **something** here
+      type: String
+  - arguments:
+      - default: false
+        description: Task ID to check for a sample config
+        isArray: false
+        name: task_id
+        required: true
+        secret: false
+    deprecated: false
+    description: Retrieves the sample configuration if available
+    execution: false
+    name: cape-get-surifiles
+    outputs:
+      - contextPath: hello
+        description: Should be Hello **something** here
+        type: String
+  - arguments:
+      - default: false
+        description: Task ID to check for payloads
+        isArray: false
+        name: task_id
+        required: true
+        secret: false
+    deprecated: false
+    description: Download the payload of the given task
+    execution: false
+    name: cape-get-payload-files
+    outputs:
+      - contextPath: hello
+        description: Should be Hello **something** here
+        type: String
+  - arguments:
+    - default: false
+      description: Task ID to check for a sample config
+      isArray: false
+      name: task_id
+      required: true
+      secret: false
+    - default: false
+      description: Process ID for a task
+      isArray: false
+      name: pid
+      required: false
+      secret: false
+    deprecated: false
+    description: Retrieves the sample configuration if available
+    execution: false
+    name: cape-get-procmemory-dump
+    outputs:
+      - contextPath: hello
+        description: Should be Hello **something** here
+        type: String
+  - arguments:
+    - default: false
+      description: Task ID to check
+      isArray: false
+      name: task_id
+      required: true
+      secret: false
+    deprecated: false
+    description: Check task for dumped processes
+    execution: false
+    name: cape-get-procdump-files
+    outputs:
+    - contextPath: hello
+      description: Should be Hello **something** here
+      type: String
+  - arguments:
+      - default: false
+        description: Task ID to check
+        isArray: false
+        name: task_id
+        required: true
+        secret: false
+    deprecated: false
+    description: Check task for dumped processes
+    execution: false
+    name: cape-get-pcap
+    outputs:
+      - contextPath: hello
+        description: Should be Hello **something** here
+        type: String
+  - arguments:
+      - default: false
+        description: Task ID to check
+        isArray: false
+        name: task_id
+        required: true
+        secret: false
+    deprecated: false
+    description: Check for files dropped by the original file
+    execution: false
+    name: cape-get-dropped-files
+    outputs:
+      - contextPath: hello
+        description: Should be Hello **something** here
+        type: String
+  - arguments:
+      - default: false
+        description: Task ID to check
+        isArray: false
+        name: task_id
+        required: true
+        secret: false
+    deprecated: false
+    description: Get screenshots from the sandbox execution
+    execution: false
+    name: cape-get-screenshots
+    outputs:
+      - contextPath: hello
+        description: Should be Hello **something** here
+        type: String
+  - arguments:
+    deprecated: false
+    description: Get list of VMs available
+    execution: false
+    name: cape-vm-list
+    outputs:
+      - contextPath: hello
+        description: Should be Hello **something** here
+        type: String
+  - arguments:
+      - default: false
+        description: Name of the VM to check
+        isArray: false
+        name: vm_name
+        required: true
+        secret: false
+    deprecated: false
+    description: Get list of VMs available
+    execution: false
+    name: cape-vm-view
+    outputs:
+      - contextPath: hello
+        description: Should be Hello **something** here
+        type: String
+  - arguments:
+      - default: false
+        description: Task ID to get report for
+        isArray: false
+        name: task_id
+        required: true
+        secret: false
+      - default: false
+        description: Report type
+        isArray: false
+        name: report_format
+        required: true
+        secret: false
+    deprecated: false
+    description: Get report summary of given task
+    execution: false
+    name: cape-get-report
+    outputs:
+      - contextPath: hello
+        description: Should be Hello **something** here
+        type: String
+  dockerimage: demisto/python3:3.7.4.2245
+  feed: false
+  isfetch: false
+  longRunning: false
+  longRunningPort: false
+  runonce: false
+  script: '-'
+  subtype: python3
+  type: python

@@ -1,0 +1,16 @@
+{
+    "name": "CAPEv2",
+    "description": "Open source malware sandbox",
+    "support": "community",
+    "currentVersion": "1.0.0",
+    "author": "Matt Houston, Vibhu A Bharadwaj",
+    "url": "",
+    "email": "mhouston@paloaltonetworks.com, vbharadwaj@paloaltonetworks.com",
+    "created": "2020-10-15T00:00:00Z",
+    "categories": [
+        "Forensics & Malware Analysis"
+    ],
+    "tags": [],
+    "useCases": [],
+    "keywords": []
+}
