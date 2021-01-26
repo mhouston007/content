@@ -1,0 +1,228 @@
+category: Data Enrichment & Threat Intelligence
+commonfields:
+  id: SecurityTrails
+  version: -1
+configuration:
+- defaultvalue: https://api.securitytrails.com/v1/
+  display: Server URL (e.g. https://example.net)
+  name: url
+  required: true
+  type: 0
+- display: API Key
+  name: api_key
+  required: true
+  type: 4
+- display: Trust any certificate (not secure)
+  name: insecure
+  required: false
+  type: 8
+- display: Use system proxy settings
+  name: proxy
+  required: false
+  type: 8
+description: Interact with Security Trails to query DNS data
+display: SecurityTrails
+name: SecurityTrails
+script:
+  commands:
+  - deprecated: false
+    execution: false
+    name: st-account-usage
+  - arguments:
+    - default: true
+      isArray: false
+      name: domain
+      required: true
+      secret: false
+    deprecated: false
+    execution: false
+    name: st-company-details
+  - arguments:
+    - default: true
+      isArray: false
+      name: domain
+      required: true
+      secret: false
+    deprecated: false
+    execution: false
+    name: st-company-associated-ips
+  - arguments:
+    - default: true
+      isArray: false
+      name: domain
+      required: true
+      secret: false
+    - default: true
+      isArray: false
+      name: domain
+      required: true
+      secret: false
+    deprecated: false
+    execution: false
+    name: st-domain-details
+  - arguments:
+    - default: true
+      isArray: false
+      name: domain
+      required: true
+      secret: false
+    - default: false
+      defaultValue: 'false'
+      isArray: false
+      name: children_only
+      required: false
+      secret: false
+    deprecated: false
+    execution: false
+    name: st-domain-subdomains
+  - arguments:
+    - default: true
+      isArray: false
+      name: domain
+      required: true
+      secret: false
+    deprecated: false
+    execution: false
+    name: st-domain-tags
+  - arguments:
+    - default: true
+      isArray: false
+      name: domain
+      required: true
+      secret: false
+    deprecated: false
+    execution: false
+    name: st-domain-whois
+  - deprecated: false
+    execution: false
+    name: st-domain-statistics
+  - arguments:
+    - default: true
+      isArray: false
+      name: domain
+      required: true
+      secret: false
+    - default: false
+      defaultValue: '0'
+      isArray: false
+      name: page
+      required: false
+      secret: false
+    deprecated: false
+    execution: false
+    name: st-domain-associated-domains
+  - arguments:
+    - default: true
+      isArray: false
+      name: domain
+      required: true
+      secret: false
+    - auto: PREDEFINED
+      default: false
+      isArray: false
+      name: type
+      predefined:
+      - a
+      - aaaa
+      - mx
+      - ns
+      - soa
+      - txt
+      required: true
+      secret: false
+    - default: false
+      isArray: false
+      name: page
+      required: false
+      secret: false
+    deprecated: false
+    execution: false
+    name: st-domain-dns-history
+  - arguments:
+    - default: true
+      isArray: false
+      name: domain
+      required: true
+      secret: false
+    - default: false
+      isArray: false
+      name: page
+      required: false
+      secret: false
+    deprecated: false
+    execution: false
+    name: st-domain-whois-history
+  - arguments:
+    - default: true
+      description: IP address to search
+      isArray: false
+      name: ip
+      required: true
+      secret: false
+    deprecated: false
+    execution: false
+    name: st-ip-neighbors
+  - arguments:
+    - default: true
+      isArray: false
+      name: ip
+      required: true
+      secret: false
+    deprecated: false
+    execution: false
+    name: st-ip-whois
+  - arguments:
+    - default: true
+      isArray: false
+      name: ip
+      required: true
+      secret: false
+    - default: false
+      defaultValue: '0'
+      isArray: false
+      name: page
+      required: false
+      secret: false
+    deprecated: false
+    execution: false
+    name: st-ip-useragents
+  - arguments:
+    - default: true
+      defaultValue: 'DSL Query, see documentation here: https://docs.securitytrails.com/docs/how-to-use-the-dsl#domains'
+      isArray: false
+      name: query
+      required: true
+      secret: false
+    - default: false
+      defaultValue: '1'
+      description: Page number to return
+      isArray: false
+      name: page
+      required: false
+      secret: false
+    deprecated: false
+    description: Search for IP addresses. A maximum of 10000 results can be retrieved.
+    execution: false
+    name: st-dsl-search
+  - arguments:
+    - default: true
+      description: 'DSL Query, see documentation here: https://docs.securitytrails.com/docs/how-to-use-the-dsl#domains'
+      isArray: false
+      name: query
+      required: true
+      secret: false
+    deprecated: false
+    description: Statistics like Reverse DNS pattern identification (RDNS entries
+      are grouped and displayed as x), ports (number of open ports found) or total
+      results are returned
+    execution: false
+    name: st-dsl-search-statistics
+  dockerimage: demisto/python3:3.7.4.2245
+  feed: false
+  isfetch: false
+  longRunning: false
+  longRunningPort: false
+  runonce: false
+  script: '-'
+  subtype: python3
+  type: python
