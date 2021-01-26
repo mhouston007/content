@@ -93,9 +93,34 @@ script:
     deprecated: false
     execution: false
     name: st-domain-whois
-  - deprecated: false
+  - arguments:
+    - default: true
+      description: 'See documentation here: https://docs.securitytrails.com/docs/how-to-use-the-dsl'
+      isArray: false
+      name: query
+      required: true
+      secret: false
+    - default: false
+      defaultValue: '1'
+      isArray: false
+      name: page
+      required: false
+      secret: false
+    - auto: PREDEFINED
+      default: false
+      defaultValue: 'false'
+      isArray: false
+      name: include_ips
+      predefined:
+      - 'false'
+      - 'true'
+      required: false
+      secret: false
+    deprecated: false
+    description: 'Get domain statistics using a DSL query. See documentation here:
+      https://docs.securitytrails.com/docs/how-to-use-the-dsl'
     execution: false
-    name: st-domain-statistics
+    name: st-dsl-search-statistics-domain
   - arguments:
     - default: true
       isArray: false
@@ -203,7 +228,7 @@ script:
     deprecated: false
     description: Search for IP addresses. A maximum of 10000 results can be retrieved.
     execution: false
-    name: st-dsl-search
+    name: st-dsl-search-ip
   - arguments:
     - default: true
       description: 'DSL Query, see documentation here: https://docs.securitytrails.com/docs/how-to-use-the-dsl#domains'
@@ -216,7 +241,34 @@ script:
       are grouped and displayed as x), ports (number of open ports found) or total
       results are returned
     execution: false
-    name: st-dsl-search-statistics
+    name: st-dsl-search-statistics-ip
+  - arguments:
+    - default: true
+      description: 'See documentation here: https://docs.securitytrails.com/docs/how-to-use-the-dsl'
+      isArray: false
+      name: query
+      required: true
+      secret: false
+    - default: false
+      defaultValue: '1'
+      isArray: false
+      name: page
+      required: false
+      secret: false
+    - auto: PREDEFINED
+      default: false
+      defaultValue: 'false'
+      isArray: false
+      name: include_ips
+      predefined:
+      - 'false'
+      - 'true'
+      required: false
+      secret: false
+    deprecated: false
+    description: 'Get domains using a DSL query. See documentation here: https://docs.securitytrails.com/docs/how-to-use-the-dsl'
+    execution: false
+    name: st-dsl-search-domain
   dockerimage: demisto/python3:3.7.4.2245
   feed: false
   isfetch: false

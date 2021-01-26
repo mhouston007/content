@@ -19,7 +19,6 @@ class Client(BaseClient):
         super().__init__(base_url, *args, **kwarg)
 
 
-# Works
 def test_module(client: Client, **args) -> str:
     uri = 'ping'
     client._http_request('GET', uri)
@@ -27,7 +26,6 @@ def test_module(client: Client, **args) -> str:
     return 'ok'
 
 
-# Works
 def get_account_usage(client: Client, **args) -> CommandResults:
     uri = '/account/usage'
     response = client._http_request('GET', uri)
@@ -51,7 +49,6 @@ def get_scroll_results(client: Client, **args) -> CommandResults:
     return response
 
 
-# Working
 def get_company_details(client: Client, **args) -> CommandResults:
     domain = args.get('domain')
     uri = f'/company/{domain}'
@@ -68,7 +65,6 @@ def get_company_details(client: Client, **args) -> CommandResults:
     return results
 
 
-# Working
 def get_company_associated_ips(client: Client, **args) -> CommandResults:
     domain = args.get('domain')
     uri = f'/company/{domain}/associated-ips'
@@ -84,7 +80,6 @@ def get_company_associated_ips(client: Client, **args) -> CommandResults:
 
     return results
 
-# Works
 def get_domain_details(client: Client, **args) -> CommandResults:
     domain = args.get('domain')
     uri = f'/domain/{domain}'
@@ -112,7 +107,6 @@ def get_domain_details(client: Client, **args) -> CommandResults:
 
     return results
 
-# Works
 def get_domain_subdomains(client: Client, **args) -> CommandResults:
     domain = args.get('domain')
     children_only = str(args.get('children_only', 'false'))
@@ -129,7 +123,6 @@ def get_domain_subdomains(client: Client, **args) -> CommandResults:
     return results
 
 
-# Works
 def get_domain_tags(client: Client, **args) -> CommandResults:
     domain = args.get('domain')
     uri = f'/domain/{domain}/tags'
@@ -145,7 +138,6 @@ def get_domain_tags(client: Client, **args) -> CommandResults:
     return results
 
 
-# Works
 def get_domain_whois(client: Client, **args) -> CommandResults:
     domain = args.get('domain')
     uri = f'/domain/{domain}/whois'
@@ -160,64 +152,7 @@ def get_domain_whois(client: Client, **args) -> CommandResults:
 
     return results
 
-# https://docs.securitytrails.com/reference#domain-search
-# '/domains/list?include_ips=false&scroll=false'
-def search(client: Client, **args) -> CommandResults:
-    params = {
-        'include_ips': args.get('include_ips', 'false'),
-        'page': int(args.get('page', 0)),
-        'scroll': str(args.get('scroll', 'false'))
-    }
 
-    body = {
-        'query': args.get('query'),
-        # Do a seperate loop and dict update outside of this since many of these aren't required
-        'filter': {
-            'x': 'See note above'
-        }
-    }
-    uri = f'/domains/list'
-    response = client._http_request('POST', uri, params=params, body=body)
-
-    results = CommandResults(
-        outputs_prefix="SecurityTrails",
-        outputs_key_field=f"SecurityTrails.account_usage",
-        outputs={'account_usage': response},
-        readable_output=tableToMarkdown('Account Usage', response)
-    )
-
-    return results
-
-
-# Add in command arguments
-def get_domain_statistics(client: Client, **args) -> CommandResults:
-    params = {
-        'include_ips': args.get('include_ips', 'false'),
-        'page': int(args.get('page', 0)),
-        'scroll': str(args.get('scroll', 'false'))
-    }
-
-    body = {
-        'query': args.get('query'),
-        # Do a seperate loop and dict update outside of this since many of these aren't required
-        'filter': {
-            'x': 'See note above'
-        }
-    }
-    uri = f'/domains/stats'
-    response = client._http_request('POST', uri, params=params, body=body)
-
-    results = CommandResults(
-        outputs_prefix="SecurityTrails",
-        outputs_key_field=f"SecurityTrails.domain_statistics",
-        outputs={'domain_statistics': response},
-        readable_output=tableToMarkdown('Statistics for Query', response)
-    )
-
-    return results
-
-
-# Works
 def get_domain_associated_domains(client: Client, **args) -> CommandResults:
     domain = args.get('domain')
 
@@ -239,7 +174,6 @@ def get_domain_associated_domains(client: Client, **args) -> CommandResults:
     return results
 
 
-# Works
 def get_domain_dns_history(client: Client, **args) -> CommandResults:
     domain = args.get('domain')
     type = args.get('type')
@@ -262,7 +196,6 @@ def get_domain_dns_history(client: Client, **args) -> CommandResults:
     return results
 
 
-# Works
 def get_domain_whois_history(client: Client, **args) -> CommandResults:
     domain = args.get('domain')
 
@@ -284,7 +217,6 @@ def get_domain_whois_history(client: Client, **args) -> CommandResults:
     return results
 
 
-# Works
 def get_ip_neighbors(client: Client, **args) -> CommandResults:
     ip = args.get('ip')
 
@@ -302,8 +234,56 @@ def get_ip_neighbors(client: Client, **args) -> CommandResults:
     return results
 
 
-# Works
-def search_with_dsl(client: Client, **args) -> CommandResults:
+def search_domain_with_dsl(client: Client, **args) -> CommandResults:
+    params = {
+        'include_ips': args.get('include_ips', 'false'),
+        'page': int(args.get('page', 0)),
+        'scroll': str(args.get('scroll', 'false'))
+    }
+
+    body = {
+        'query': str(args.get('query'))
+    }
+
+    uri = f'/domains/list'
+    response = client._http_request('POST', uri, params=params, json_data=body)
+    records = response.get('records')
+
+    results = CommandResults(
+        outputs_prefix="SecurityTrails",
+        outputs_key_field=f"SecurityTrails.domain_dsl_search",
+        outputs={'dsl_search_domain': records},
+        readable_output=tableToMarkdown(f"DSL Search: {str(args.get('query'))}", records)
+    )
+
+    return results
+
+
+def search_domain_with_dsl_statistics(client: Client, **args) -> CommandResults:
+    params = {
+        'include_ips': args.get('include_ips', 'false'),
+        'page': int(args.get('page', 0)),
+        'scroll': str(args.get('scroll', 'false'))
+    }
+
+    body = {
+        'query': str(args.get('query'))
+    }
+
+    uri = f'/domains/stats'
+    response = client._http_request('POST', uri, params=params, json_data=body)
+
+    results = CommandResults(
+        outputs_prefix="SecurityTrails",
+        outputs_key_field=f"SecurityTrails.domain_dsl_search",
+        outputs={'domain_statistics': response},
+        readable_output=tableToMarkdown(f"Statistics for Query: {str(args.get('query'))}", response)
+    )
+
+    return results
+
+
+def search_ip_with_dsl(client: Client, **args) -> CommandResults:
     params = {
         'page': int(args.get('page'))
     }
@@ -320,7 +300,7 @@ def search_with_dsl(client: Client, **args) -> CommandResults:
 
     results = CommandResults(
         outputs_prefix="SecurityTrails",
-        outputs_key_field=f"SecurityTrails.dsl_search",
+        outputs_key_field=f"SecurityTrails.ip_dsl_search",
         outputs={'dsl_search': records},
         readable_output=tableToMarkdown(f'DSL Search: {str(args.get("query"))}', records)
     )
@@ -328,8 +308,7 @@ def search_with_dsl(client: Client, **args) -> CommandResults:
     return results
 
 
-# Works
-def search_with_dsl_statistics(client: Client, **args) -> CommandResults:
+def search_ip_with_dsl_statistics(client: Client, **args) -> CommandResults:
     # Docs: https://docs.securitytrails.com/docs/how-to-use-the-dsl
     # Example: ptr_part = 'stackoverflow.com'
     body = {
@@ -341,7 +320,7 @@ def search_with_dsl_statistics(client: Client, **args) -> CommandResults:
 
     results = CommandResults(
         outputs_prefix="SecurityTrails",
-        outputs_key_field=f"SecurityTrails.dsl_statistics",
+        outputs_key_field=f"SecurityTrails.ip_dsl_statistics",
         outputs={'dsl_statistics': response},
         readable_output=tableToMarkdown(f"DSL Statistics: {str(args.get('query'))}", response)
     )
@@ -349,7 +328,6 @@ def search_with_dsl_statistics(client: Client, **args) -> CommandResults:
     return results
 
 
-# Works
 def get_ip_whois(client: Client, **args) -> CommandResults:
     ip = args.get('ip')
 
@@ -367,7 +345,6 @@ def get_ip_whois(client: Client, **args) -> CommandResults:
     return results
 
 
-# Works
 def get_ip_useragents(client: Client, **args) -> CommandResults:
     ip = args.get('ip')
 
@@ -421,15 +398,16 @@ def main():
         f"{command_prefix}-domain-subdomains": get_domain_subdomains,
         f"{command_prefix}-domain-tags": get_domain_tags,
         f"{command_prefix}-domain-whois": get_domain_whois,
-        f"{command_prefix}-domain-statistics": get_domain_statistics,
+        f"{command_prefix}-dsl-search-domain": search_domain_with_dsl,
+        f"{command_prefix}-dsl-search-statistics-domain": search_domain_with_dsl_statistics,
         f"{command_prefix}-domain-associated-domains": get_domain_associated_domains,
         f"{command_prefix}-domain-dns-history": get_domain_dns_history,
         f"{command_prefix}-domain-whois-history": get_domain_whois_history,
         f"{command_prefix}-ip-neighbors": get_ip_neighbors,
         f"{command_prefix}-ip-whois": get_ip_whois,
         f"{command_prefix}-ip-useragents": get_ip_useragents,
-        f"{command_prefix}-dsl-search": search_with_dsl,
-        f"{command_prefix}-dsl-search-statistics": search_with_dsl_statistics
+        f"{command_prefix}-dsl-search-ip": search_ip_with_dsl,
+        f"{command_prefix}-dsl-search-statistics-ip": search_ip_with_dsl_statistics
     }
 
     command = demisto.command()
